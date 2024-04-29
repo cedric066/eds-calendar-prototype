@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# JSM Scheduler Calendar Prototype
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Prototype implementation of a React calendar for the Jira Service Management app.
 
-## Available Scripts
+## Running the project
 
-In the project directory, you can run:
+1. Clone the repo
+2. Execute `npm i` to install the Node packages used in this project
+3. Execute `npm start` to begin running the server. The project is visible in your browser at [localhost:3000](http://localhost:3000/). To stop the server, do Ctrl + C in the terminal running the project
 
-### `npm start`
+## Design decisions
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+A major issue with [Forge's UIKit](https://developer.atlassian.com/platform/forge/ui-kit/) is that it lacks a native calendar component. Because of this, we need to use a third-party calendar component in the scheduler app. After researching multiple components, I decided that [React Big Calendar](https://github.com/jquense/react-big-calendar) is the best option. The packages I tried are summarized below.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. **React Event Calendar** ([Github](https://github.com/dptoot/react-event-calendar))
+    * **Pros:**
+        * Easy to use
+        * Simple and customizable events
+    * **Cons:**
+        * Deprecated! (and not compatible with the latest version of React)
+        * Functionality has been surpassed by other libraries
+2. **Ant Design** ([Docs](https://ant.design/components/calendar))
+    * **Pros:**
+        * Looks good
+        * Custom styling possibilities
+        * The other Ant Design [components](https://ant.design/components/overview) can be used in other places throughout the app/page
+    * **Cons:**
+        * Complicated to set up and expand on (lots of overhead)
+        * Year and month view only
+        * Component lacks event calendar functionality
+            * Events don't have times
+            * We'd have to implement the event calendar part ourselves, even with this component
+3. **React Big Calendar** ([Github](https://github.com/jquense/react-big-calendar), [Docs](https://jquense.github.io/react-big-calendar/examples/?path=/story/about-big-calendar--page))
+    * **Pros:**
+        * Easy to use and great documentation
+        * Simple event structure with support for custom fields
+        * Lots of props and features
+        * Multiple useful view options
+        * Option to use pre-built or custom styling
+    * **Cons:**
+        * Default styling is a little outdated
+        * Requires some use of inline-style props
 
-### `npm test`
+## Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+All of these features are covered in React Big Calendar's [docs](https://jquense.github.io/react-big-calendar/examples/?path=/story/about-big-calendar--page). Here, I highlighted some of the features that will make React Big Calendar a good fit for our project.
 
-### `npm run build`
+Events are structured as a list of JSON objects. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+``` js
+{
+    'title': 'Birthday Party',
+    'start': new Date(2024, 3, 13, 7, 0, 0),
+    'end': new Date(2024, 3, 13, 10, 30, 0)
+}
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+By default, they contain a title, start date, and end date (the dates are formatted as `Date` objects). For all-day events, remove the hour, minute, and second fields from the start and end dates. Additionally, events support custom fields. This way, we can add things like descriptions and lists of participants. Since events are a list of JSON objects, they can be added to the calendar through the results of a function/API call (note that in this example I created a file called `events.js` and imported them in `App.js`).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The calendar component itself also has features that make it a good fit for our application:
 
-### `npm run eject`
+* Support for multiple event handlers, like `onSelectEvent`, `onDrillDown`, and `onSelecting`. These will let us easily add the functionality we want to the calendar. In this example, I made the app open an alert window containing the event object when you click on an event.
+* The `background`, `selectable`, and/or `dayPropGetter` can be combined to disable selection and add custom styling to certain days/events, so we can implement disabled dates in the app.
+* The `scrollToTime`, `views`, `max`, and `min` props provide heavy customization of the times/dates shown on the calendar. We can use this to only show relevant days/hours in the app.
+* To use the default styling, the external CSS link needs to be imported into the file the calendar is in. But, React Big Calendar also contains SASS files. This gives us the ability to easily customize the styling of the calendar.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Limitations
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The biggest limitation right now is that we haven't figured out how to use third-party React libraries in Forge yet. However, once we figure that out then the code from this project should be easily transferrable into the Forge app. Another thing I'm worried about is that the default styling needs to be imported from an external source. I'm not sure how or if this will work in Forge.
