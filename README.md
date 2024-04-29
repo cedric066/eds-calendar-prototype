@@ -1,6 +1,6 @@
 # JSM Scheduler Calendar Prototype
 
-Prototype implementation of a React calendar for the Jira Service Management app.
+Prototype implementation of a React calendar for the EDS Jira Service Management app.
 
 ## Running the project
 

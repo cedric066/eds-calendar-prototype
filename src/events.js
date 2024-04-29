@@ -86,6 +86,11 @@ export default [
         'title': 'Multi-day Event',
         'start': new Date(2024, 3, 20, 19, 30, 0),
         'end': new Date(2024, 3, 22, 2, 0, 0)
+    },
+    {
+        'title': 'Another Meeting',
+        'start': new Date(2024, 3, 8, 11, 0, 0),
+        'end': new Date(2024, 3, 8, 13, 30, 0)
     }
 ];
   
